@@ -18,7 +18,7 @@ namespace PrivateMethods.Tests
 
         public static ConstructorInfo GetConstructorInfoByParameters(Type type, object[] parameters)
         {
-            ConstructorInfo[] constructorInfos = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
+            ConstructorInfo[] constructorInfos = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (ConstructorInfo constructorInfo in constructorInfos)
             {
                 if (ConstructorMatchParsedParameters(constructorInfo, parameters))

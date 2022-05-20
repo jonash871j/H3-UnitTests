@@ -2,28 +2,35 @@
 using System;
 using System.Reflection;
 
-
 namespace PrivateMethods.Tests
 {
     [TestFixture]
-    public class DeliveryManagerTests
+    public class DeliveryManagerTests : EmployeeTests
     {
+        public override object CreateEmployee(string name)
+        {
+            object[] parameters = { name };
+            Type deliveryManagerType = ReflectionUtillity.GetTypeInNamespace("DeliveryManager", "PrivateMethods");
+            ConstructorInfo deliveryManagerConstructor = ReflectionUtillity.GetConstructorInfoByParameters(deliveryManagerType, parameters);
+            return deliveryManagerConstructor.Invoke(parameters);
+        }
+
         [Test]
         public void PrintInfo_WhenNameIsBob_ReturnImDeliveryManagerBobAndEmpShouldBe2()
         {
             //Arrange
             object[] parameters = { "Bob" };
-            Type managerType = ReflectionUtillity.GetTypeInNamespace("DeliveryManager", "PrivateMethods");
-            ConstructorInfo personConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
-            object managerInstance = personConstructor.Invoke(parameters);
+            Type deliveryManagerType = ReflectionUtillity.GetTypeInNamespace("DeliveryManager", "PrivateMethods");
+            ConstructorInfo deliveryManagerConstructor = ReflectionUtillity.GetConstructorInfoByParameters(deliveryManagerType, parameters);
+            object deliveryManagerInstance = deliveryManagerConstructor.Invoke(parameters);
 
             //Act
-            string info = (string)managerType
+            string info = (string)deliveryManagerType
                 .GetMethod("PrintInfo", ReflectionUtillity.DefaultBindingFlags)
-                .Invoke(managerInstance, null);
-            int empType = (int)managerType
+                .Invoke(deliveryManagerInstance, null);
+            int empType = (int)deliveryManagerType
               .GetField("empType", ReflectionUtillity.DefaultBindingFlags)
-              .GetValue(managerInstance);
+              .GetValue(deliveryManagerInstance);
 
             //Assert
             Assert.That(info, Is.EqualTo("I'm Delivery Manager Bob "));

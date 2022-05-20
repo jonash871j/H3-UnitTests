@@ -5,94 +5,80 @@ using System.Reflection;
 namespace PrivateMethods.Tests
 {
     [TestFixture]
-    public class ManagerTests
+    public class ManagerTests : EmployeeTests
     {
+        public override object CreateEmployee(string name)
+        {
+            object[] parameters = { name };
+            Type managerType = ReflectionUtillity.GetTypeInNamespace("Manager", "PrivateMethods");
+            ConstructorInfo managerConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
+            return managerConstructor.Invoke(parameters);
+        }
+
         [Test]
-        public void ContainsIllegalChars_WhenNameIsBob_ReturnFalseAndEmpTypeShouldBe1()
+        public void PrintInfo_WhenNameIsBob_ReturnSpecificMessageAndEmpTypeShouldBe1()
         {
             //Arrange
             object[] parameters = { "Bob" };
             Type managerType = ReflectionUtillity.GetTypeInNamespace("Manager", "PrivateMethods");
-            ConstructorInfo personConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
-            object managerInstance = personConstructor.Invoke(parameters);
+            ConstructorInfo managerConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
+            object managerInstance = managerConstructor.Invoke(parameters);
 
             //Act
-            bool containsIllegalChars = (bool)managerType
-                .GetMethod("ContainsIllegalChars", ReflectionUtillity.DefaultBindingFlags)
+            string message = (string)managerType
+                .GetMethod("PrintInfo", ReflectionUtillity.DefaultBindingFlags)
                 .Invoke(managerInstance, null);
             int empType = (int)managerType
               .GetField("empType", ReflectionUtillity.DefaultBindingFlags)
               .GetValue(managerInstance);
 
             //Assert
-            Assert.False(containsIllegalChars);
+            Assert.That(message, Is.EqualTo("I'm Manager Bob . I'm serious badass"));
             Assert.That(empType, Is.EqualTo(1));
         }
 
         [Test]
-        public void ContainsIllegalChars_WhenNameIsPete_ReturnFalseAndEmpTypeShouldBe2()
+        public void PrintInfo_WhenNameIsPete_ReturnSpecificMessageAndEmpTypeShouldBe2()
         {
             //Arrange
             object[] parameters = { "Pete" };
             Type managerType = ReflectionUtillity.GetTypeInNamespace("Manager", "PrivateMethods");
-            ConstructorInfo personConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
-            object managerInstance = personConstructor.Invoke(parameters);
+            ConstructorInfo managerConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
+            object managerInstance = managerConstructor.Invoke(parameters);
 
             //Act
-            bool containsIllegalChars = (bool)managerType
-                .GetMethod("ContainsIllegalChars", ReflectionUtillity.DefaultBindingFlags)
+            string message = (string)managerType
+                .GetMethod("PrintInfo", ReflectionUtillity.DefaultBindingFlags)
                 .Invoke(managerInstance, null);
             int empType = (int)managerType
               .GetField("empType", ReflectionUtillity.DefaultBindingFlags)
               .GetValue(managerInstance);
 
             //Assert
-            Assert.False(containsIllegalChars);
+            Assert.That(message, Is.EqualTo("I'm Manager Pete . I'm pretty ok"));
             Assert.That(empType, Is.EqualTo(2));
         }
 
         [Test]
-        public void ContainsIllegalChars_WhenNameIsPete_ReturnFalseAndEmpTypeShouldBe3()
+        public void PrintInfo_WhenNameIsPete_ReturnSpecificMessageAndEmpTypeShouldBe3()
         {
             //Arrange
-            object[] parameters = { "Jonas" };
+            object[] parameters = { "Peter" };
             Type managerType = ReflectionUtillity.GetTypeInNamespace("Manager", "PrivateMethods");
-            ConstructorInfo personConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
-            object managerInstance = personConstructor.Invoke(parameters);
+            ConstructorInfo managerConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
+            object managerInstance = managerConstructor.Invoke(parameters);
 
             //Act
-            bool containsIllegalChars = (bool)managerType
-                .GetMethod("ContainsIllegalChars", ReflectionUtillity.DefaultBindingFlags)
+            string message = (string)managerType
+                .GetMethod("PrintInfo", ReflectionUtillity.DefaultBindingFlags)
                 .Invoke(managerInstance, null);
             int empType = (int)managerType
               .GetField("empType", ReflectionUtillity.DefaultBindingFlags)
               .GetValue(managerInstance);
 
             //Assert
-            Assert.False(containsIllegalChars);
+            Assert.That(message, Is.EqualTo("I'm Manager Peter . I'm really nice"));
             Assert.That(empType, Is.EqualTo(3));
-        }
-
-        [Test]
-        public void ContainsIllegalChars_WhenNameIsDollarPutin_ReturnTrueAndEmpTypeShouldBe0()
-        {
-            //Arrange
-            object[] parameters = { "$Putin" };
-            Type managerType = ReflectionUtillity.GetTypeInNamespace("Manager", "PrivateMethods");
-            ConstructorInfo personConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
-            object managerInstance = personConstructor.Invoke(parameters);
-
-            //Act
-            bool containsIllegalChars = (bool)managerType
-                .GetMethod("ContainsIllegalChars", ReflectionUtillity.DefaultBindingFlags)
-                .Invoke(managerInstance, null);
-            int empType = (int)managerType
-              .GetField("empType", ReflectionUtillity.DefaultBindingFlags)
-              .GetValue(managerInstance);
-
-            //Assert
-            Assert.True(containsIllegalChars);
-            Assert.That(empType, Is.EqualTo(0));
         }
 
         [Test]
@@ -101,8 +87,8 @@ namespace PrivateMethods.Tests
             //Arrange
             object[] parameters = { "Putin" };
             Type managerType = ReflectionUtillity.GetTypeInNamespace("Manager", "PrivateMethods");
-            ConstructorInfo personConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
-            object managerInstance = personConstructor.Invoke(parameters);
+            ConstructorInfo managerConstructor = ReflectionUtillity.GetConstructorInfoByParameters(managerType, parameters);
+            object managerInstance = managerConstructor.Invoke(parameters);
 
             //Act
             TestDelegate testDelegate = new(() =>
